@@ -42,6 +42,22 @@ class User_model extends CI_Model
       }
     }
 
+    public function getUserID($username){
+      $this->db->where('username', $username);
+      return $this->db->get('user')->row();
+    }
+
+    public function fillUserInfo($username, $data){
+      $this->db->where('userID', $data['userID']);
+      $info_user = $this->db->get('info_user')->row();
+      if(isset($info_user)){
+        $this->db->where('userID', $userID);
+        $this->db->update('info_user', $data);
+      }else{
+        $this->db->insert('info_user', $data);
+      }
+    }
+
     public function getProfile($username){
       $this->db->where('username', $username);
       $account = $this->db->get('user')->row();

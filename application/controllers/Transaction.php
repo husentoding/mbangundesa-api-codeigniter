@@ -17,7 +17,7 @@ require APPPATH . 'libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Register extends REST_Controller {
+class Transaction extends REST_Controller {
 
     function __construct()
     {
@@ -32,41 +32,18 @@ class Register extends REST_Controller {
         $this->load->model('User_model');
       }
 
+      //buat transaksi
+      //lihat transaksi
+
     public function index_post(){
       if($this->input->server('REQUEST_METHOD') == 'POST'){
-          $email = $this->post('email');
-          $username = $this->post('username');
-          $password = $this->post('password');
+          $tipe = $this->post('tipe');
+          //tipe 0 = lihat transaksi
+          //tipe 1 = buat transaksi
+          if($tipe == 0){
 
-          if($email != NULL && $username != NULL && $password != NULL){
-
-            $status = $this->User_model->register($username, $password, $email);
-            if($status){
-              $id = $this->User_model->getUserID($username);
-              $data = array(
-                'userID' => $id->userID,
-                'nama' => ' ',
-                'kontak' => ' ',
-                'email' => ' ',
-                'alamat' => ' ',
-                'no_ktp' => ' ',
-                'foto_ktp' => ' ',
-                'saldo' => ' ',
-                'bank' => ' ',
-                'atas_nama_bank' => ' ',
-                'foto_profil' => ' ',
-                'no_rekening' => ' ',
-              );
-              $this->User_model->fillUserInfo($id, $data);
-              $this->response('registered', 200);
-            }else{
-              $this->response('fail', 404);
-            }
-
-          }else{
-            $this->response('salah', 403);
           }
-
       }
     }
+
 }
