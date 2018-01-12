@@ -11,13 +11,22 @@ class User_model extends CI_Model
 
 
     public function login($username, $password){
-      $data = array(
-        'username' => $username,
-        'password' => $password,
-      );
-      $this->db->where($data);
-      $akun = $this->db->get('user')->result_array();
-      return $akun;
+      // $data = array(
+      //   'username' => $username,
+      //   'password' => $password,
+      // );
+      // $this->db->where($data);
+      $this->db->where('username',$username);
+      $akun = $this->db->get('user')->row();
+      if($akun->password == $password)
+        return $akun;
+      else{
+        $data = array(
+          'error' => TRUE,
+          'error_msg' => 'Wrong credentials',
+        );
+        return $data;
+      }
     }
 
     public function register($username, $password, $email){

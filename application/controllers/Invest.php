@@ -17,7 +17,7 @@ require APPPATH . 'libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class User extends REST_Controller {
+class Invest extends REST_Controller {
 
     function __construct()
     {
@@ -29,16 +29,25 @@ class User extends REST_Controller {
         $this->methods['users_get']['limit'] = 500; // 500 requests per hour per user/key
         $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
         $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
-        $this->load->model('User_model');
+        $this->load->model('Invest_model');
       }
 
+    //get specific Product
     public function index_post(){
       if($this->input->server('REQUEST_METHOD') == 'POST'){
-          $username = $this->post('username');
-          $password = $this->post('password');
-
-          $account = $this->User_model->login($username, $password);
-          $this->response($account);
+        $productID = $this->post('productID');
+        if(!isset($productID)){
+          $this->response('Something wrong', 404);
+        }else{
+          $produk = $this->Invest_model->getProduct($productID);
+          $this->response($produk, 200);
+        }
       }
+    }
+
+    //get All Product
+    public function index_get(){
+      $this->response($this->Invest_model->getAllProduct(), 200);
+
     }
 }
