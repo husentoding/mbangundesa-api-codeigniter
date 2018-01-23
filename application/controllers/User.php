@@ -38,7 +38,11 @@ class User extends REST_Controller {
           $password = $this->post('password');
 
           $account = $this->User_model->login($username, $password);
-          $this->response($account);
+          $data = array(
+              'error' => FALSE,
+              'account' => $account,
+              );
+          $this->response($data);
       }
     }
 }

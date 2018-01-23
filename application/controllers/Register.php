@@ -58,9 +58,17 @@ class Register extends REST_Controller {
                 'no_rekening' => ' ',
               );
               $this->User_model->fillUserInfo($id, $data);
-              $this->response('registered', 200);
+              $data= array(
+                  'error' => FALSE,
+                  'error_msg' => 'Registered',
+                  );
+              $this->response($data, 200);
             }else{
-              $this->response('fail', 404);
+                $data= array(
+                    'error' => TRUE,
+                    'error_msg' => 'Failed',
+                    );
+              $this->response($data, 404);
             }
 
           }else{

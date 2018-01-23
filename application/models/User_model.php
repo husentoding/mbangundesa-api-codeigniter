@@ -18,12 +18,21 @@ class User_model extends CI_Model
       // $this->db->where($data);
       $this->db->where('username',$username);
       $akun = $this->db->get('user')->row();
-      if($akun->password == $password)
-        return $akun;
+      if($akun){
+          if($akun->password == $password){
+              return $akun;
+          }else{
+            $data = array(
+              'error' => TRUE,
+              'error_msg' => 'Wrong credentials',
+            );
+            return $data;
+          }
+      }
       else{
         $data = array(
           'error' => TRUE,
-          'error_msg' => 'Wrong credentials',
+          'error_msg' => 'Wrong Credentials',
         );
         return $data;
       }
