@@ -45,16 +45,16 @@ class Register extends REST_Controller {
               $id = $this->User_model->getUserID($username);
               $data = array(
                 'userID' => $id->userID,
-                'nama' => ' ',
+                'nama' => 'Silahkan edit data',
                 'kontak' => ' ',
                 'email' => ' ',
-                'alamat' => ' ',
+                'alamat' => 'Silahkan edit data',
                 'no_ktp' => ' ',
                 'foto_ktp' => ' ',
-                'saldo' => ' ',
+                'saldo' => '0',
                 'bank' => ' ',
                 'atas_nama_bank' => ' ',
-                'foto_profil' => ' ',
+                'foto_profil' => 'https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/user-male-circle-blue-512.png',
                 'no_rekening' => ' ',
               );
               $this->User_model->fillUserInfo($id, $data);

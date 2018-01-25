@@ -20,7 +20,11 @@ class User_model extends CI_Model
       $akun = $this->db->get('user')->row();
       if($akun){
           if($akun->password == $password){
-              return $akun;
+            $data = array(
+              'error' => FALSE,
+              'account' => $akun,
+            );
+              return $data;
           }else{
             $data = array(
               'error' => TRUE,
