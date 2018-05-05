@@ -111,4 +111,40 @@ class Mitra_model extends CI_Model
       }
     }
 
+    public function saveDataMitra($userID, $data){
+      $this->db->where('userID', $userID);
+      $cek2 = $this->db->get('mitra_desa')->row();
+      if(isset($cek2)){
+        return FALSE;
+      }
+
+      $this->db->where('userID', $userID);
+      $cek = $this->db->get('mitra_desa')->row();
+      if(isset($cek)){
+        $this->db->where('userID', $userID);
+        $data = array(
+            'userID' => $data['userID'],
+            'nama_kepala' => $data['nama_kepala'],
+            'kontak' => $data['kontak'],
+            'nik_kepala' => $data['nik_kepala'],
+            'program' => $data['program'],
+            'saldo' => 0,
+        );
+        $this->db->update('mitra_desa', $data);
+      }else{
+        $this->db->where('userID', $userID);
+        $data = array(
+            'userID' => $data['userID'],
+            'nama_kepala' => $data['nama_kepala'],
+            'kontak' => $data['kontak'],
+            'nik_kepala' => $data['nik_kepala'],
+            'program' => $data['program'],
+            'saldo' => 0,
+        );
+        $this->db->insert('mitra_desa', $data);
+      }
+      return TRUE;
+
+    }
+
 }

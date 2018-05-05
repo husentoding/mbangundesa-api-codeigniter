@@ -34,20 +34,11 @@ class Invest extends REST_Controller {
 
     //get specific Product
     public function index_post(){
-      if($this->input->server('REQUEST_METHOD') == 'POST'){
-        $productID = $this->post('productID');
-        if(!isset($productID)){
-          $this->response('Something wrong', 404);
-        }else{
-          $produk = $this->Invest_model->getProduct($productID);
-          $this->response($produk, 200);
-        }
-      }
     }
 
     //get All Product
     public function index_get(){
-      $this->response($this->Invest_model->getAllProduct(), 200);
+      $this->response($this->Invest_model->get_all_invest(), 200);
 
     }
 }

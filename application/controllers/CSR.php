@@ -34,20 +34,26 @@ class CSR extends REST_Controller {
 
     //get specific Product
     public function index_post(){
-      if($this->input->server('REQUEST_METHOD') == 'POST'){
-        $productID = $this->post('productID');
-        if(!isset($productID)){
-          $this->response('Something wrong', 404);
-        }else{
-          $produk = $this->CSR_model->getProduct($productID);
-          $this->response($produk, 200);
+        $data = array(
+            'id_village' => $this->post('id_village'),
+            'name' => $this->post('name'),
+            'goal' => $this->post('goal'),
+            'expire_date' => $this->post('expire_date'),
+            'description' => $this->post('description')
+        );
+        $insert = $this->db->insert('csr', $data);
+        if ($insert) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('status' => 'fail', 502));
         }
-      }
     }
 
     //get All Product
     public function index_get(){
-      $this->response($this->CSR_model->getAllProduct(), 200);
-
+        if(isset($_GET['id'])){
+            $this->response($this->CSR_model->get_csr_by_id($_GET['id']));  
+        }
+        $this->response($this->CSR_model->get_all_csr(), 200);
     }
 }

@@ -9,6 +9,26 @@ class User_model extends CI_Model
         //Do your magic here
     }
 
+    public function editProfile($data, $username){
+      $id = $this->getUserID($username);
+      $id = $id->userID;
+      $this->db->where('userID', $id);
+      $result = $this->db->get('info_user')->row();
+      if($result){
+        $this->db->where('userID', $id);
+        $this->db->update('info_user', $data);
+        return true;
+      }else{
+        return false;
+      }
+      // $cek = $this->db->update('info_user', $data);
+      // if($cek){
+      //   return $cek;
+      // }else{
+      //   return false;
+      // }
+    }
+
 
     public function login($username, $password){
       // $data = array(
@@ -22,13 +42,13 @@ class User_model extends CI_Model
           if($akun->password == $password){
             $data = array(
               'error' => FALSE,
-              'account' => $akun,
+              'msg' => $akun,
             );
               return $data;
           }else{
             $data = array(
               'error' => TRUE,
-              'error_msg' => 'Wrong credentials',
+              'msg' => 'Wrong credentials',
             );
             return $data;
           }
@@ -36,7 +56,7 @@ class User_model extends CI_Model
       else{
         $data = array(
           'error' => TRUE,
-          'error_msg' => 'Wrong Credentials',
+          'msg' => 'Wrong Credentials',
         );
         return $data;
       }

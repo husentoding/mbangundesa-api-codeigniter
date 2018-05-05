@@ -1,0 +1,8 @@
+[10-Mar-2018 15:43:24 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_result::order_by() in /home/mbangund/public_html/api/application/models/Product_model.php on line 20
+[10-Mar-2018 15:44:16 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_result::order_by() in /home/mbangund/public_html/api/application/models/Product_model.php on line 20
+[10-Mar-2018 15:50:54 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::result() in /home/mbangund/public_html/api/application/models/Product_model.php on line 22
+[10-Mar-2018 16:19:52 UTC] PHP Fatal error:  Call to a member function result() on null in /home/mbangund/public_html/api/application/models/Product_model.php on line 28
+[10-Mar-2018 16:49:16 UTC] PHP Parse error:  syntax error, unexpected '$query' (T_VARIABLE) in /home/mbangund/public_html/api/application/models/Product_model.php on line 30
+[11-Mar-2018 01:17:13 UTC] PHP Fatal error:  Call to undefined method Invest_model::getAllProduct() in /home/mbangund/public_html/api/application/controllers/Invest.php on line 50
+[11-Mar-2018 01:17:23 UTC] PHP Fatal error:  Call to undefined method Invest_model::getAllProduct() in /home/mbangund/public_html/api/application/controllers/Invest.php on line 50
+[11-Mar-2018 01:17:27 UTC] PHP Fatal error:  Call to undefined method Invest_model::getAllProduct() in /home/mbangund/public_html/api/application/controllers/Invest.php on line 50

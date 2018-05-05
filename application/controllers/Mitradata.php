@@ -17,7 +17,7 @@ require APPPATH . 'libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Product extends REST_Controller {
+class Mitradata extends REST_Controller {
 
     function __construct()
     {
@@ -29,38 +29,45 @@ class Product extends REST_Controller {
         $this->methods['users_get']['limit'] = 500; // 500 requests per hour per user/key
         $this->methods['users_post']['limit'] = 100; // 100 requests per hour per user/key
         $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
-        $this->load->model('Product_model');
+        $this->load->model('Mitra_model');
       }
 
-    //get specific Product
     public function index_post(){
-        
-        $data = array(
-            'id_village' => $this->post('id_village'),
-            'name' => $this->post('name'),
-            'category' => $this->post('category'),
-            'price' => $this->post('price'),
-            'expire_date' => $this->post('expire_date'),
-            'description' => $this->post('description')
+      // echo 'tes';
+      $id = $this->input->post('id');
+      $nama = $this->input->post('nama_kepala');
+      $kontak = $this->input->post('kontak');
+      $nik = $this->input->post('nik');
+      $program = $this->input->post('program');
+
+      if(!$id || !$nama || !$kontak || !$nik || !$program){
+        $data= array(
+          'error' => TRUE,
+          'msg' => 'Input parameter incomplete'
         );
-        $insert = $this->db->insert('produk', $data);
-        if ($insert) {
-            $this->response($data, 200);
-        } else {
-            $this->response(array('status' => 'fail', 502));
-        }
+        $this->response($data, 404);
+      }
+      $data = array(
+          'userID' => $id,
+          'nama_kepala' => $nama,
+          'kontak' => $kontak,
+          'nik_kepala' => $nik,
+          'program' => $program,
+      );
+      $cek = $this->Mitra_model->saveDataMitra($id, $data);
+      if(!$cek){
+        $data = array(
+          'error' => TRUE,
+          'msg' => 'Desa udah ada',
+        );
+        $this->response($data, 404);
+      }else{
+        $data = array(
+          'error' => FALSE,
+          'msg' => 'Pendaftaran Berhasil',
+        );
+        $this->response($data, 200);
+      }
     }
 
-    //get All Product
-    public function index_get(){
-        if(isset($_GET["id"])) {
-            $produk = $this->Product_model->get_product_by_id($_GET["id"]);
-            $this->response($produk, 200);
-        }
-        if(isset($_GET["offset"])){
-            $produk = $this->Product_model->get_product_with_limit($_GET["offset"]);
-            $this->response($produk, 200);
-        }
-        $this->response($this->Product_model->get_all_product(), 200);
-    }
 }
