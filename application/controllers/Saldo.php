@@ -17,7 +17,7 @@ require APPPATH . 'libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Laporan extends REST_Controller {
+class Saldo extends REST_Controller {
 
     function __construct()
     {
@@ -32,79 +32,71 @@ class Laporan extends REST_Controller {
         $this->load->model('Laporan_model');
       }
 
+// tambah saldo
     public function index_post(){
-      // echo 'tes';
       if(!isset($_POST['aksi'])){
-        $this->responseError("Insufficient Parameter");
+        $this->responseError('Insufficient Parameter');
         return;
       }
-
       $aksi = $this->input->post('aksi');
 
-      if ($aksi == "data"){
-        if(!isset($_POST['judul']) || !isset($_POST['konten']) || !isset($_POST['mitra_id']) || !isset($_POST['desa_id']) || !isset($_POST['tanggal'])){
-          $this->responseError("Insufficient Data");
-          return;
+      if($aksi == "data"){
+        if(!isset($_POST['userid']) || !isset($_POST['jumlah'])){
+          $this->responseError('Insufficient Data');
         }
-
-        $judul = $this->input->post('judul');
-        $konten = $this->input->post('konten');
-        $mitra_id = $this->input->post('mitra_id');
-        $desa_id = $this->input->post('desa_id');
-        $tanggal = $this->input->post('tanggal');
-        if(!isset($judul)){
-          $this->response(array('error'=>TRUE,'msg'=>'Insufficient Parameter'), 403);
-        }
-        $action = array(
-              'mitraID' => $mitra_id,
-              'desaID' => $desa_id,
-              'tanggal' => $tanggal,
-              // 'laporanimageID' => $this->Laporan_model->getImageID($url),
-              'judul' => $judul,
-              'konten_laporan' => $konten,
-        );
-        $id = $this->Laporan_model->saveLaporan($action);
-        $this->response($data = array('error' => FALSE, 'msg' => $id), 200);
-
-      }else if($aksi == "gambar"){
-        if(!isset($_FILES["pic"])){
-          $data = array(
-            'error' => TRUE,
-            'msg' => 'File not found',
+        $data = array(
+            'jumlah' => $this->input->post('jumlah'),
+            'userID' => $this->input->post('userid'),
+            'bukti_pembayaran_url' => '',
           );
-          $this->response($data, 404);
+        $this->db->insert('tambah_saldo', $data);
+        $msg = array('id_insert' => $this->db->insert_id());
+        $output = array('error' => FALSE, 'msg' => $msg);
+        $this->response($output, 200);
+      }
+      else if($aksi == "bukti"){
+        if(!isset($_FILES["pic"])){
+          $this->responseError("File not Found");
         }
-        if(!isset($_POST['mitra_id']) || !isset($_POST['laporan_id'])){
+        if(!isset($_POST['idsaldo'])){
           $this->responseError("Insufficient Parameter");
         }
-        $id = $this->input->post('laporan_id');
-        $mitra_id = $this->input->post('mitra_id');
+
+        $idsaldo = $this->input->post('idsaldo');
+
         $type = explode('.', $_FILES["pic"]["name"]);
         $type = $type[count($type)-1];
-        $dir = "./images/laporan/".$mitra_id;
+        $dir = "./images/bukti_pembayaran/";
         if(!file_exists($dir)){
           mkdir($dir, 0777, true);
         } 
-        $url ="./images/laporan/".$mitra_id."/".uniqid(rand()).".".$type;
-        
-
+        $url ="./images/bukti_pembayaran/".uniqid(rand()).".".$type;
         $url_final = $this->do_upload($url, $type);
         
-        $this->Laporan_model->insertImageLink($id, $url_final);
+        $data = array(
+            'bukti_pembayaran_url' => $url_final
+          );
+
+        $this->db->where('tambahsaldoID', $idsaldo);
+        $success = $this->db->update('tambah_saldo', $data);
+
+        if(!$success){
+          $this->responseError("Upload Image Failed");
+          return;
+        }
+
         $data = array(
           'error' => FALSE,
           'msg' => base_url().substr($url_final,1),
         );
         $this->response($data,200);
       }
-
     }
 
     private function responseError($msg){
       $data = array('error' => TRUE, 'msg' => $msg);
       $this->response($data, 404);
     }
-
 
     private function do_upload($url, $type){
 
@@ -117,4 +109,5 @@ class Laporan extends REST_Controller {
       }
       return "";
     }
+
 }

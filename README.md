@@ -112,6 +112,8 @@ aksi = gambar
 
 laporan_id
 
+tanggal
+
 **NOTE** : Gambar hanya bisa di insert kalau data laporan sudah ada(gunakan method 13 terlebih dahulu lalu gunakan method ini)
 
 ### 13. Insert Data Laporan (Hanya Data Tanpa Gambar)
@@ -128,4 +130,26 @@ mitra_id
 desa_id
 
 aksi = data
+
+### 14. Insert Request Penambahan Saldo
+- Method : POST
+- URL : http://api.mbangundesa.id/index.php/saldo
+- Parameter : 
+
+aksi = data
+
+jumlah
+
+userid
+
+### 15. Insert Bukti Pembayaran
+- Method : POST
+- URL : http://api.mbangundesa.id/index.php/laporan
+- Parameter :
+
+aksi = bukti
+
+pic //gambar bukti pembayaran
+
+idsaldo //id request penambahan saldo(primary key tabel tambah saldo)
 
