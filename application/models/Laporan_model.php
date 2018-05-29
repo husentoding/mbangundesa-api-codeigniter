@@ -10,22 +10,23 @@ class Laporan_model extends CI_Model
         //Do your magic here
     }
 
-    public function getImageID($url){
+    public function insertImageLink($id, $url){
       $data = array(
-          'image_link' => $url,
+          'laporanID' => $id,
+          'url_gambar' => $url,
         );
 
-      $this->db->insert('laporan_image', $data);
+      $this->db->insert('gambar_laporan', $data);
 
-      $this->db->where('image_link', $url);
-      $id_image = $this->db->get('laporan_image')->row()->laporanimageID;
-      return $id_image;
+      // $this->db->where('image_link', $url);
+      // $id_image = $this->db->get('laporan_image')->row()->laporanimageID;
+      // return $id_image;
     }
 
-    //KTP di table info_user
     public function saveLaporan($data){
 
         $this->db->insert('laporan', $data);
+        return $this->db->insert_id();
       
     }
 
