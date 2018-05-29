@@ -70,4 +70,21 @@ password
 - Parameter : username
 password
 
-### 12. 
+### 12. Insert Data Laporan (Hanya Gambar Tanpa Data)
+- Method : POST
+- URL : http://api.mbangundesa.id/index.php/laporan
+- Parameter : mitra_id
+pic //gambar
+aksi = gambar
+laporan_id
+
+**NOTE** : Gambar hanya bisa di insert kalau data laporan sudah ada(gunakan method 13 terlebih dahulu lalu gunakan method ini)
+
+### 13. Insert Data Laporan (Hanya Data Tanpa Gambar)
+- Method : POST
+- URL : http://api.mbangundesa.id/index.php/laporan
+- Parameter : judul
+kontent
+mitra_id
+desa_id
+aksi = data
