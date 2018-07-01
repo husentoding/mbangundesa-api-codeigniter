@@ -96,6 +96,36 @@ class Laporan extends REST_Controller {
           'msg' => base_url().substr($url_final,1),
         );
         $this->response($data,200);
+      }else if($aksi == "get_laporan"){
+        if(!isset($_POST['user_id'])){
+          $this->responseError("Insufficient Parameter");
+        }
+        // dari user id, get daftar sumbangannya
+        $id = $this->input->post('user_id');
+        // $this->db->select('DISTINCT `csrID`');
+        $this->db->group_by('csrID');
+        $this->db->where('userID', $id);
+        $result = $this->db->get('sumbangan')->result_array();
+        // dari sini dapat csr id , ambil csr id secara distinct/unique
+        // dari csr id dapet id desa
+        $daftar_desa = array();
+        foreach($result as $a){
+          $this->db->where('id', $a['csrID']);
+          $desa = $this->db->get('csr')->row();
+          array_push($daftar_desa, $desa->id_village);
+        }
+        // daftar desa udah dapat, cek laporan yg punya desa itu
+        $daftar_laporan = array();
+        foreach($daftar_desa as $a){
+          $this->db->where('desaID', $a);
+          $laporan = $this->db->get('laporan')->row();
+          array_push($daftar_laporan, $laporan);
+        }
+        $data = array(
+          'error' => FALSE,
+          'msg' => $daftar_laporan,
+        );
+        $this->response($data,200);
       }
 
     }
